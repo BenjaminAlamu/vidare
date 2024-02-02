@@ -7,32 +7,24 @@ import Select from "../components/Select";
 import { INDUSTRIES, TECHNOLOGIES } from "../utils/data";
 
 import { CalendarBlank } from "@phosphor-icons/react";
-import { SelectOption } from "../utils/types";
 
 const Details = () => {
   const {
-    setValue,
     control,
-    register,
     handleSubmit,
     getValues,
     formState: { errors },
   } = useForm();
-  const [state, setState] = useState<any>({});
-  //   const [value1, setValue1] = useState<SelectOption[]>([]);
-  //   const [value2, setValue2] = useState<SelectOption | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log({ data, errors });
-  };
-
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setState({ ...state, [name]: value });
-    setValue(name, value);
-  };
+  const onSubmit = () => {
+    setLoading(true)
+    setTimeout(()=> {
+        navigate("/success")
+    }, 3000)
+};
 
   return (
     <main className="bg-white px-6 rounded-2xl py-8 shadow-2xl">
@@ -53,7 +45,7 @@ const Details = () => {
           rules={{
             required: true,
           }}
-          render={({ field: { onChange, onBlur, value, name, ref } }) => (
+          render={({ field: { onChange } }) => (
             <Select
               labelText="Select a suitable industry"
               options={INDUSTRIES}
@@ -71,7 +63,7 @@ const Details = () => {
           rules={{
             required: true,
           }}
-          render={({ field: { onChange, onBlur, value, name, ref } }) => (
+          render={({ field: { onChange } }) => (
             <Select
               multiple
               labelText="Select a suitable tech (as many as you use)"
@@ -90,7 +82,7 @@ const Details = () => {
           rules={{
             required: true,
           }}
-          render={({ field: { onChange, onBlur, value, name, ref } }) => (
+          render={({ field: { onChange } }) => (
             <main>
               <label className="text-[16px] text-grey-300 mb-1 block text-left capitalize">
                 When was your company founded?
@@ -112,8 +104,7 @@ const Details = () => {
 
         <main className="w-full mt-8">
           <button className="w-full bg-[#00148E] font-semibold text-white px-[27px] py-[12px] rounded-lg">
-            Continue
-            {/* {loading ? "Loading..." : "Continue"} */}
+            {loading ? "Loading..." : "Continue"}
           </button>
         </main>
       </form>

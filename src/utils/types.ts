@@ -38,3 +38,15 @@ export type InputType = {
   isInvalid: boolean;
   errorMessage: string;
 };
+
+export type InfoType = {
+    name: string;
+    website: string;
+    location: string;
+  };
+
+  export type DetailsType = {
+    industry: string;
+    tech: [];
+    year: string;
+  };

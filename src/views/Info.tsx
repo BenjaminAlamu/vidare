@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler, FieldValues } from "react-hook-form";
 
 import Input from "../components/Input";
 import Select from "../components/Select";
 import { STATES } from "../utils/data";
+import { InfoType } from "../utils/types";
 
-const Register = (props) => {
+const Register = () => {
   const {
     setValue,
     control,
@@ -15,15 +16,19 @@ const Register = (props) => {
     getValues,
     formState: { errors },
   } = useForm();
-  const [state, setState] = useState<any>({});
+  const [state, setState] = useState<InfoType>({name: "", website: "",location: ""});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log({ data, errors });
+  const onSubmit = () => {
+      setLoading(true)
+      setTimeout(()=> {
+          navigate("/details")
+      }, 3000)
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
     setValue(name, value);
@@ -48,6 +53,7 @@ const Register = (props) => {
           addValue={handleChange}
           value={state.name}
           register={register}
+          disabled={loading}
           id="name"
           name="name"
           isInvalid={!!errors.name}
@@ -60,13 +66,14 @@ const Register = (props) => {
           addValue={(e) => handleChange(e)}
           register={register}
           value={state.website}
+          disabled={loading}
           id="website"
           name="website"
           isInvalid={!!errors.website}
           errorMessage="Startup Website is required"
         />
         <Controller
-          name="select"
+          name="location"
           control={control}
           rules={{
             required: true,
@@ -75,9 +82,9 @@ const Register = (props) => {
             <Select
               labelText="Where in Africa is your company legally registered?"
               options={STATES}
-              value={getValues().select || []}
+              value={getValues().location || []}
               onChange={onChange}
-              isInvalid={!!errors.select}
+              isInvalid={!!errors.location}
               errorMessage="Please select your country"
             />
           )}
@@ -85,8 +92,7 @@ const Register = (props) => {
 
         <main className="w-full mt-8">
           <button className="w-full bg-[#00148E] font-semibold text-white px-[27px] py-[12px] rounded-lg">
-            Continue
-            {/* {loading ? "Loading..." : "Continue"} */}
+            {loading ? "Loading..." : "Proceed"}
           </button>
         </main>
       </form>
